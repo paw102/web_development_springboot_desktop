@@ -14,7 +14,3 @@ public class JUnitCycleQuiz {
         System.out.println("Bye!");
     }
 }
-/*
-    지금 현재 작성중입니다.
-    이것만 지우면 그대로 될 것 같아요.
- */
