@@ -134,5 +134,35 @@ class MemberRepositoryTest {
         //  then           -> 2L 에 해당하는 객체를 찾았을 때 empty 인지 확인 할 예정
         assertThat(memberRepository.findById(2L).isEmpty()).isTrue();
     }
+    /*
+        수정 메서드
+        ex) id 가 2인 멤버의 이름을 "BC" 로 바꾼다고 가정했을 때,
 
+        수정 관련 SQL 문
+        UPDATE member
+        SET name = 'BC'
+        WHERE id = 2;
+
+        JPA 에서 데이터를 수정하는 방식은 추후에 SQL 에서 배우게 될 트랜잭션 내에서 데이터를 수행해야 함.
+            -> 메서드만 사용하는 것이 아니라 @Transactional 애너테이션을 메서드에 추가해야함.
+
+            Member.java
+     */
+
+    @Sql("/insert-members.sql")
+    @Test
+    void update(){
+        //given     -> id 가 2인 객체를 가지고 와서 member 라는 객체명에 저장 / 현재 name = "B";
+        Member member = memberRepository.findById(2L).get();
+
+        //when
+        member.changeName("BC");
+
+        //then
+        assertThat(memberRepository.findById(2L).get().getName()).isEqualTo("BC");
+    }
+    /*
+        이상의 메서드에는 @Transactional 애터네이션이 존재하지 않음.
+            -> @DataJpaTest 때문 (@Transactional 애너테이션이 이미 @DataJpaTest 에 상속받았기 때문)
+     */
 }
